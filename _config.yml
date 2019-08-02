@@ -98,8 +98,8 @@ service-worker: true
 # Friends
 friends: [
     {
-        title: "WY",
-        href: "http://zhengwuyang.com"
+        title: "Google",
+        href: "http://google.com"
     },{
         title: "百度",
         href: "http://www.baidu.com"
@@ -107,7 +107,10 @@ friends: [
         title: "Apple",
         href: "https://apple.com"
     },{
-        title: "Apple Developer",
-        href: "https://developer.apple.com/"
+        title: "Jekyll",
+        href: "http://jekyllcn.com"
+    },{
+        title: "Bootstrap",
+        href: "https://www.bootcss.com/"
     }
 ]
