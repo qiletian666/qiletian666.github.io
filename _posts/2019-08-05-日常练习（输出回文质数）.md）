@@ -1,0 +1,104 @@
+这个题目是输入两个在10000-99999之间的数
+然后找出这个两个数之间的既是质数也是回文数的数字，并且全部输出
+
+
+---
+layout:     post
+title:      日常练习-输出回文质数
+subtitle:   日常练习-输出回文质数
+date:       2019-08-05
+author:     Mike Qi
+header-img: img/post-bg-2015.jpg
+catalog: true
+published: ture
+tags:
+    - Practice
+---
+
+# 日常练习-输出回文质数 #
+
+## 输出回文质数
+
+输入两个在10000-99999之间的数
+
+然后找出这个两个数之间的既是质数也是回文数的数字，并且全部输出
+
+
+## 以下是c++语法答案 ##
+
+```c
+#include <iostream>
+
+#include <cmath>
+
+#include <queue>
+
+using namespace std;
+
+queue<int> q1;
+
+int huiwen(int x) {
+	int a;
+	int b = 0;
+	int tem = x;/*这个地方之所以需要在设置一个tem，就是因为x会在后面的运算中变化，需要用一个tem来保存x的值*/
+	while (x) {
+		a = x % 10;
+		x = x / 10;
+		b = b * 10 + a;
+	}
+	if (tem == b) {
+		return tem;  /*如果这个地方发现数字相等，则可以知道是回文数，那么久返回原值*/
+	}
+	else {
+		return tem - 1;
+	}
+}
+
+bool zhishu(int x) {	/*用bool来判断是否为质数*/
+	for (int i = 2; i < sqrt(x); i++) {
+		if (x % i == 0){
+		return false;
+	}
+	else{
+	
+	return true;
+}
+}
+} 
+
+int main() {
+
+	int a, b;
+	cin >> a >> b;
+	int c, d;
+	if (a>b) {
+		c = a;
+		d = b;
+	}
+	else {
+		c = b;
+		d = a;
+	}
+
+	for (int i = d; i <= c; i++) {
+		if (zhishu(i)){
+		q1.push(i);		/*如果是为TRUE，那么就说明是质数，则推入队列中*/
+	}
+}
+
+	int longer;
+
+	longer = q1.size();
+
+	for (int i = 0; i<longer; i++) {
+		int p;
+		p = q1.front();
+		q1.pop();
+		if (huiwen(p) == p) {	/*不是回文的质数被减一了，只有是回文数的才可以相等*/
+			cout << p << endl;
+		}
+	}
+
+	return 0;
+}
+```
