@@ -1,0 +1,119 @@
+---
+layout:     post
+title:      Python表白小程序
+subtitle:   Python表白小程序
+date:       2020-02-14
+author:     Mike Qi
+header-img: img/post-bg-2015.jpg
+catalog: true
+published: ture
+tags:
+    - Diary
+---
+
+# 表白小程序
+
+**大致功能**
+
+
+　　这几天由于疫情在家，顺手研究了一下PythonQt5。
+　　大致功能就是只有点击“我愿意”才可以结束程序，不然就只能考虑拔电源了。
+    目前这是第一版，后续考虑继续更新相关的更多功能。
+    最后，
+
+
+## 以下是程序源码
+
+```python
+
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QPushButton, QMessageBox
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QEvent, QRect, QPropertyAnimation, QEasingCurve, QPoint
+import random
+import sys
+
+class Example(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+
+        self.lb = QLabel('❤李静娴❤', self)
+        self.lb.setFont(QFont("Timers", 30))
+        self.lb.setStyleSheet("color:MediumVioletRed;font-weight:bold")
+        self.lb.move(123, 50)
+
+        self.lb = QLabel('你愿意一辈子和我在一起吗？', self)
+        self.lb.setFont(QFont("Timers", 20))
+        self.lb.setStyleSheet("color:rgb(220,100,100,250);font-weight:bold")
+        self.lb.move(40, 120)
+
+        self.btn1 = QPushButton('愿意', self)
+        self.btn1.setFont(QFont("Timers", 15))
+        self.btn1.setStyleSheet("color:rgb(148,0,211,250);font-weight:bold")
+        self.btn1.move(200, 200)
+        self.btn1.clicked.connect(self.right)
+
+        self.btn2 = QPushButton('不愿意', self)
+        self.btn2.setFont(QFont("Timers", 15))
+        self.btn2.setStyleSheet("color:	Navy;font-weight:bold")
+        self.btn2.move(200, 300)
+        self.btn2.clicked.connect(self.false)
+
+        self.btn2.setMouseTracking(True)
+        self.btn2.installEventFilter(self)
+
+        self.setWindowTitle("2.14——我爱你，李静娴")
+        self.resize(500, 500)
+        self.show()
+
+    def closeEvent(self, event):
+
+        reply = QMessageBox.question(self, '往哪跑？', "你跑的了么？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            QMessageBox.warning(self, "别跑了", "你注定是我的 (≖ ‿ ≖)✧")
+        else:
+            QMessageBox.warning(self, "明智", "不跑就对了嘛 (≖ ‿ ≖)✧")
+        event.ignore()
+
+    def right(self):
+        QMessageBox.information(self, '这就对了嘛', "早这么爽快不就好了么，谁让我这么喜欢你呢 (≖ ‿ ≖)✧")
+        sys.exit()
+
+    def false(self):
+        QMessageBox.information(self, '可以嘛', "手速不错，我喜欢！不过你还是跑不的，你注定是我的 (≖ ‿ ≖)✧")
+
+    def eventFilter(self, object, event):
+        if object == self.btn2:
+            if event.type() == QEvent.Enter:
+                self.doMove()
+        return QWidget.eventFilter(self, object, event)
+
+    def doMove(self):
+        global x, y
+        if self.btn2.pos() == QPoint(200, 300):
+            self.anim = QPropertyAnimation(self.btn2, b"geometry")
+            self.anim.setDuration(200)
+            self.anim.setStartValue(QRect(200, 300, 100, 35))
+            x = random.randint(40, 460)
+            y = random.randint(30, 480)
+            self.anim.setEndValue(QRect(x, y, 100, 35))
+            self.anim.setEasingCurve(QEasingCurve.OutCubic)
+            self.anim.start()
+        elif self.btn2.pos() == QPoint(x, y):
+            self.anim = QPropertyAnimation(self.btn2, b"geometry")
+            self.anim.setDuration(200)
+            self.anim.setStartValue(QRect(x, y, 100, 35))
+            x = random.randint(40, 460)
+            y = random.randint(30, 480)
+            self.anim.setEndValue(QRect(x, y, 100, 35))
+            self.anim.setEasingCurve(QEasingCurve.OutCubic)
+            self.anim.start()
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())
+```
